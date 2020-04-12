@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { WorldwideTotals } from '../Components/Worldwide';
-import { Countries, CountryResult } from '../Components/Countries';
+import { CountryResult } from '../Components/Countries';
 import API from '../Utils/API';
 
 class CoronaPage extends Component {
@@ -17,20 +17,28 @@ class CoronaPage extends Component {
 			countryCases: '',
 			countryRecovered: '',
 			countryCritical: '',
-			countryDeaths: ''
+			countryDeaths: '',
+			displayWorldwide: false,
+			displayCountry: false
 		};
+
+		this.handleCountryChange = this.handleCountryChange.bind(this);
+		this.grabCountryName = this.grabCountryName.bind(this);
 	}
 
 	componentDidMount() {
 		this.totalResults();
+		this.grabCountryName(this.state.selectedCountry);
 	}
 
 	totalResults = () => {
+		//Data for the worldwide results
 		API.getTotals()
 			.then((response) => {
 				const result = response.data;
 				console.log(result);
 				this.setState({
+					displayWorldwide: true,
 					cases: result[0].confirmed,
 					recovered: result[0].recovered,
 					critical: result[0].critical,
@@ -39,32 +47,34 @@ class CoronaPage extends Component {
 			})
 			.catch((err) => console.log(err));
 
+		// Catches the data of all the countries from the API and use them for the dropdown function
 		API.getAllCountries()
 			.then((response) => {
 				const countryResult = response.data;
-				console.log(countryResult);
-				this.setState({
-					countryCases: countryResult.cases,
-					countryRecovered: countryResult.recovered,
-					countryCritical: countryResult.critical,
-					countryDeaths: countryResult.deaths
+				let countriesFromAPI = countryResult.map((country) => {
+					return { value: country, display: country };
 				});
-			})
-			.then((data) => {
-				let countryArray = [];
-				countryArray = data.map((country) => {
-					return country;
-				});
-				console.log(countryArray);
+				console.log(countriesFromAPI);
+
 				this.setState({
-					countries: countryArray
+					displayCountry: true,
+					countries: [ { value: '', display: '' } ].concat(countriesFromAPI)
 				});
 			})
 			.catch((err) => console.log(err));
 	};
 
-	handleChange = (event) => {
+	grabCountryName = (selectedCountry) => {
+		API.getCountryDataByName(selectedCountry).then((response) => {
+			const countryPicked = response.data[0];
+			console.log(countryPicked);
+		});
+	};
+
+	handleCountryChange = (event) => {
 		const { name, value } = event.target;
+
+		this.grabCountryName(this.state.selectedCountry);
 
 		this.setState({
 			[name]: value
@@ -80,16 +90,30 @@ class CoronaPage extends Component {
 					critical={this.state.critical}
 					deaths={this.state.deaths}
 				/>
-
-				{/* {this.state.countries.map((country, index) => ( 
-					<div key={index}>
-						<Countries country={this.state.countries}>
-							<option key={country.value} value={country.value}>
-								{country.country}
+				<div className="dropdownCountriesMenu" id="country">
+					<label for="dropdown-menu"> Country:</label>
+					<select
+						name="selectedCountry"
+						value={this.state.selectedCountry}
+						onChange={(e) => {
+							this.handleCountryChange(e);
+						}}
+					>
+						{this.state.countries.map((country, i) => (
+							<option key={i} value={country.value.country}>
+								{country.display.country}
 							</option>
-						</Countries>
-					</div>
-				))}*/}
+						))}
+					</select>
+				</div>
+				{this.state.selectedCountry}
+				<CountryResult
+					onChange={(e) => this.setState({ selectedCountry: e.target.value })}
+					countryCases={this.state.countryCases}
+					countryRecovered={this.state.countryRecovered}
+					countryCritical={this.state.countryCritical}
+					countryDeaths={this.state.countryDeaths}
+				/>
 			</div>
 		);
 	}
