@@ -19,7 +19,8 @@ class CoronaPage extends Component {
 			countryCritical: '',
 			countryDeaths: '',
 			displayWorldwide: false,
-			displayCountry: false
+			displayCountry: false,
+			countrySelected: false
 		};
 
 		this.handleCountryChange = this.handleCountryChange.bind(this);
@@ -65,17 +66,25 @@ class CoronaPage extends Component {
 	};
 
 	grabCountryName = (selectedCountry) => {
-		API.getCountryDataByName(selectedCountry).then((response) => {
-			const countryPicked = response.data[0];
-			console.log(countryPicked);
-		});
+		API.getCountryDataByName(selectedCountry)
+			.then((response) => {
+				const countryPicked = response.data[0];
+				console.log(countryPicked);
+				this.setState({
+					countrySelected: true,
+					countryCases: countryPicked.confirmed,
+					countryRecovered: countryPicked.recovered,
+					countryCritical: countryPicked.critical,
+					countryDeaths: countryPicked.deaths
+				});
+			})
+			.catch((err) => console.log(err));
 	};
 
 	handleCountryChange = (event) => {
 		const { name, value } = event.target;
 
 		this.grabCountryName(this.state.selectedCountry);
-
 		this.setState({
 			[name]: value
 		});
@@ -95,6 +104,7 @@ class CoronaPage extends Component {
 					<select
 						name="selectedCountry"
 						value={this.state.selectedCountry}
+						onClick={this.handleCountryChange}
 						onChange={(e) => {
 							this.handleCountryChange(e);
 						}}
@@ -108,7 +118,7 @@ class CoronaPage extends Component {
 				</div>
 				{this.state.selectedCountry}
 				<CountryResult
-					onChange={(e) => this.setState({ selectedCountry: e.target.value })}
+					onChange={(event) => this.setState({ selectedCountry: event.target.value })}
 					countryCases={this.state.countryCases}
 					countryRecovered={this.state.countryRecovered}
 					countryCritical={this.state.countryCritical}
