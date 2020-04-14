@@ -1,0 +1,27 @@
+h1#brandName {
+	margin: 0 auto;
+}
+
+nav {
+	background-color: black;
+	color: green;
+}
+.links {
+	display: flex;
+	justify-content: center;
+	margin: 0.5%;
+}
+.displayCountryFigures {
+	padding: 1.5%;
+	display: inline;
+	margin-left: 6%;
+}
+
+#worldwideHeader {
+	display: flex;
+	justify-content: center;
+}
+
+.figures {
+	margin-left: 10%;
+}

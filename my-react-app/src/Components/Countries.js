@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 
 export const CountryResult = (props) => {
 	return (
@@ -10,7 +11,7 @@ export const CountryResult = (props) => {
 				Recovered: {props.countryRecovered}
 			</span>
 			<span id="critical" className="displayCountryFigures" onChange={(event) => props.onChange(event)}>
-				Critcal Condition: {props.countryCritical}
+				Critical Condition: {props.countryCritical}
 			</span>
 			<span id="deaths" className="displayCountryFigures" onChange={(event) => props.onChange(event)}>
 				Deaths: {props.countryDeaths}

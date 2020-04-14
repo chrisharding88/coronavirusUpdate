@@ -1,0 +1,16 @@
+.box1,
+.box2 {
+	margin-top: 5%;
+	padding: 3%;
+	border: 2px solid black;
+	margin: 0 auto;
+	width: 65%;
+}
+
+span {
+	padding: 2%;
+}
+
+.link1 {
+	margin-right: 0.8%;
+}
