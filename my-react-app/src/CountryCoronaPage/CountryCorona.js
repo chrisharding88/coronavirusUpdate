@@ -5,12 +5,15 @@ import { Nav } from '../Components/Nav';
 import './styles.css';
 import numeral from 'numeral';
 import { Link } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
 
 class CountryCoronaPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			countries: [],
+			xCountry: [],
+			yCOuntry: [],
 			selectedCountry: '',
 			countryCases: '',
 			countryRecovered: '',
@@ -47,6 +50,9 @@ class CountryCoronaPage extends Component {
 	};
 
 	grabCountryName = (selectedCountry) => {
+		const pointerToThis = this;
+		let xValuesCountryFunction = [];
+		let yValuesCountryFunction = [];
 		API.getCountryDataByName(selectedCountry)
 			.then((response) => {
 				const countryPicked = response.data[0];
@@ -58,6 +64,19 @@ class CountryCoronaPage extends Component {
 					countryCritical: numeral(countryPicked.critical).format('0,0'),
 					countryDeaths: numeral(countryPicked.deaths).format('0,0')
 				});
+
+				for (var key in response.data[0]) {
+					xValuesCountryFunction.push(key);
+					yValuesCountryFunction.push(response.data[0][key]);
+				}
+
+				pointerToThis.setState({
+					xCountry: xValuesCountryFunction.slice(2, 5),
+					yCountry: yValuesCountryFunction.slice(2, 5)
+				});
+
+				console.log(xValuesCountryFunction);
+				console.log(yValuesCountryFunction);
 			})
 			.catch((err) => console.log(err));
 	};
@@ -72,6 +91,20 @@ class CountryCoronaPage extends Component {
 	};
 
 	render() {
+		const data = {
+			labels: this.state.xCountry,
+			datasets: [
+				{
+					label: this.state.xCountry,
+					backgroundColor: [ '#05f505', '#090ded', '#f50509' ],
+					borderColor: 'rgba(255,99,132,1)',
+					borderWidth: 1,
+					hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+					hoverBorderColor: 'rgba(255,99,132,1)',
+					data: this.state.yCountry
+				}
+			]
+		};
 		return (
 			<div>
 				<Nav />
@@ -112,6 +145,7 @@ class CountryCoronaPage extends Component {
 						countryCritical={this.state.countryCritical}
 						countryDeaths={this.state.countryDeaths}
 					/>
+					<Bar data={data} width={500} height={220} />
 				</div>
 			</div>
 		);

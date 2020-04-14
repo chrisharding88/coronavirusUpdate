@@ -5,6 +5,7 @@ import { Nav } from '../Components/Nav';
 import './styles.css';
 import numeral from 'numeral';
 import { Link } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
 
 class WorldwideCoronaPage extends Component {
 	constructor(props) {
@@ -15,6 +16,8 @@ class WorldwideCoronaPage extends Component {
 			recovered: '',
 			critical: '',
 			deaths: '',
+			xValues: [],
+			yValues: [],
 			displayWorldwide: false
 		};
 	}
@@ -25,6 +28,10 @@ class WorldwideCoronaPage extends Component {
 
 	totalResults = () => {
 		//Data for the worldwide results
+		const pointerToThis = this;
+		let xValuesFunction = [];
+		let yValuesFunction = [];
+		console.log(pointerToThis);
 		API.getTotals()
 			.then((response) => {
 				const result = response.data;
@@ -36,6 +43,18 @@ class WorldwideCoronaPage extends Component {
 					critical: numeral(result[0].critical).format('0,0'),
 					deaths: numeral(result[0].deaths).format('0,0')
 				});
+				for (var key in response.data[0]) {
+					xValuesFunction.push(key);
+					yValuesFunction.push(response.data[0][key]);
+				}
+
+				pointerToThis.setState({
+					xValues: xValuesFunction.slice(1, 4),
+					yValues: yValuesFunction.slice(1, 4)
+				});
+
+				console.log(xValuesFunction);
+				console.log(yValuesFunction);
 			})
 			.catch((err) => console.log(err));
 	};
@@ -48,6 +67,21 @@ class WorldwideCoronaPage extends Component {
 	};
 
 	render() {
+		const data = {
+			labels: this.state.xValues,
+			datasets: [
+				{
+					label: this.state.xValues,
+					backgroundColor: [ '#05f505', '#090ded', '#f50509' ],
+					borderColor: 'rgba(255,99,132,1)',
+					borderWidth: 1,
+					hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+					hoverBorderColor: 'rgba(255,99,132,1)',
+					data: this.state.yValues
+				}
+			]
+		};
+
 		return (
 			<div>
 				<Nav />
@@ -66,6 +100,8 @@ class WorldwideCoronaPage extends Component {
 						critical={this.state.critical}
 						deaths={this.state.deaths}
 					/>
+
+					<Bar data={data} />
 				</div>
 			</div>
 		);
