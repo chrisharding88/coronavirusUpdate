@@ -7,10 +7,45 @@
 	width: 65%;
 }
 
+select {
+	width: 30%;
+}
+
+.figures {
+	margin-top: 3%;
+	display: flex;
+	justify-content: space-evenly;
+	margin-left: 2%;
+	font-weight: bold;
+}
+
+canvas {
+	margin-top: 1.5%;
+}
+
 span {
 	padding: 2%;
 }
 
 .link1 {
 	margin-right: 0.8%;
+}
+
+#cases {
+	background-color: #fbff03;
+}
+
+#recovered {
+	background-color: #009617;
+	color: ivory;
+}
+
+#critical {
+	background-color: #090ded;
+	color: ivory;
+}
+
+#deaths {
+	background-color: #f50509;
+	color: ivory;
 }

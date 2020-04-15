@@ -26,3 +26,11 @@ select {
 	display: flex;
 	justify-content: center;
 }
+
+.countryFigures {
+	margin-top: 2%;
+	display: flex;
+	justify-content: space-evenly;
+	margin-left: -1%;
+	font-weight: bold;
+}

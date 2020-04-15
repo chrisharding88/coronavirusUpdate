@@ -72,7 +72,7 @@ class WorldwideCoronaPage extends Component {
 			datasets: [
 				{
 					label: this.state.xValues,
-					backgroundColor: [ '#05f505', '#090ded', '#f50509' ],
+					backgroundColor: [ '#009617', '#090ded', '#f50509' ],
 					borderColor: 'rgba(255,99,132,1)',
 					borderWidth: 1,
 					hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -100,7 +100,6 @@ class WorldwideCoronaPage extends Component {
 						critical={this.state.critical}
 						deaths={this.state.deaths}
 					/>
-
 					<Bar data={data} />
 				</div>
 			</div>

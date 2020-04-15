@@ -96,10 +96,10 @@ class CountryCoronaPage extends Component {
 			datasets: [
 				{
 					label: this.state.xCountry,
-					backgroundColor: [ '#05f505', '#090ded', '#f50509' ],
+					backgroundColor: [ '#009617', '#090ded', '#f50509' ],
 					borderColor: 'rgba(255,99,132,1)',
 					borderWidth: 1,
-					hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+					hoverBackgroundColor: [ '#05f505', '#0a78ff', '#fa2338' ],
 					hoverBorderColor: 'rgba(255,99,132,1)',
 					data: this.state.yCountry
 				}
