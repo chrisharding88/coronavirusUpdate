@@ -12,6 +12,7 @@
 		"@testing-library/user-event": "^7.1.2",
 		"axios": "^0.19.2",
 		"chart.js": "^2.9.3",
+		"gh-pages": "^2.2.0",
 		"numeral": "^2.0.6",
 		"react": "^16.13.1",
 		"react-chartjs-2": "^2.9.0",
@@ -20,6 +21,8 @@
 		"react-scripts": "3.4.1"
 	},
 	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
@@ -29,7 +32,15 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
-		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	}
 }
